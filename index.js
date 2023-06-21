@@ -1,30 +1,24 @@
 'use strict'
-const {ApolloServer, gql}=require('apollo-server');
-const cursos=[
-    {titulo:'El profesor se embalo',
-    tecnologia:'En teoria apollo'},
-    {titulo:'Buen diplomado',
-    tecnologia:'node'},
-]
-const typeDefs=gql`
-    type Curso{
-        titulo:String
-        tecnologia:String
-    }
-    type Query{
-        getCursos: [Curso]
-    }
-`
-const resolvers={
-    Query:{
-        getCursos:()=>cursos
-    }
-}
+const {ApolloServer} = require('apollo-server');
+
+//importa las definiciones de los tipos, queries y mutations
+const typeDefs = require("./db/schemas");
+
+//importa los contenidos de las queries y mutations
+const resolvers = require("./db/resolvers");
+
+//se conecta a la base de datos
+const connectdb = require("./config/db");
+
+connectdb();
+
 //servidor
 const server=new ApolloServer({
     typeDefs,
     resolvers
 });
+
+
 
 //Arrancar servidor
 
