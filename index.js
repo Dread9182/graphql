@@ -15,7 +15,19 @@ connectdb();
 //servidor
 const server=new ApolloServer({
     typeDefs,
-    resolvers
+    resolvers,
+    //este tipo de request se maneja de manera distinta donde los headers se envian por esta variable de contexto
+    context:(req) => {
+        const token=req.headers['authorization']||'';
+        try{
+            return {
+                token
+            };
+        }
+        catch(e){
+            console.log(e);
+        }
+    }
 });
 
 
